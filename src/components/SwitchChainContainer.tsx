@@ -2,7 +2,8 @@ import SwitchChainBtn from "@components/SwitchChainBtn";
 import { useState } from "react";
 import SwitchChainModal from "./SwitchChainModal";
 
-export default function SwitchChainContainer() {
+export default function SwitchChainContainer(props: { currentChainId: number }) {
+  const { currentChainId } = props;
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -12,8 +13,8 @@ export default function SwitchChainContainer() {
   };
   return (
     <>
-      <SwitchChainBtn handleOpenModal={onHandleOpen} />
-      <SwitchChainModal isOpen={show} onClose={handleClose} />
+      <SwitchChainBtn handleOpenModal={onHandleOpen} currentChainId={currentChainId} />
+      <SwitchChainModal isOpen={show} onClose={handleClose} currentChainId={currentChainId} />
     </>
   );
 }

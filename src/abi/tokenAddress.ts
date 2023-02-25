@@ -1,8 +1,15 @@
+import { Contract, ethers } from "ethers";
 import { BSC_CHAIN_ID, FIG_CHAIN_ID } from "./constants";
+import {
+  bscTestNetBrigdeContractAbi,
+  bscUsdContractAddress,
+  figBrigdeContractAbi,
+  figUsdContractAddress,
+} from "./abi-contract";
 
-export const USD_ADDRESS: { [chainid: number]: { symbol: string; address: string } } = {
-  [FIG_CHAIN_ID]: { address: "0x6b175474e89094c44da98b954eedeac495271d0f", symbol: "FUSD" },
-  [BSC_CHAIN_ID]: { address: "0x5C221E77624690fff6dd741493D735a17716c26B", symbol: "WFUSD" },
+export const USD_ADDRESS: { [chainid: number]: { symbol: string; address: string; imgUrl: string } } = {
+  [FIG_CHAIN_ID]: { address: "0x6b175474e89094c44da98b954eedeac495271d0f", symbol: "FUSD", imgUrl: "usdt-logo.svg" },
+  [BSC_CHAIN_ID]: { address: "0x5C221E77624690fff6dd741493D735a17716c26B", symbol: "WFUSD", imgUrl: "usdt-logo.svg" },
 };
 
 export const ETHER_TOKEN_SYMBOL: { [chainid: number]: { symbol: string } } = {
@@ -17,3 +24,34 @@ export function getEtherTokenSymbol(chainId: number): string {
 export function getUsdAddress(chainId: number) {
   return USD_ADDRESS[chainId] ? USD_ADDRESS[chainId] : null;
 }
+
+export const BRIDGE_WALLET_ADDRESS = "0x35194b1f825820d1f1a8826d52e033fe439e7513";
+
+const figBrigdeUsdContractInterface = new ethers.utils.Interface(figBrigdeContractAbi);
+const figBrigdeUsdContract = new Contract(figUsdContractAddress, figBrigdeUsdContractInterface);
+
+const bscBrigdeUsdContractInterface = new ethers.utils.Interface(bscTestNetBrigdeContractAbi);
+const bscBrigdeUsdContract = new Contract(bscUsdContractAddress, bscBrigdeUsdContractInterface);
+export interface ITokenChainInfo {
+  symbol: string;
+  address: string;
+  imgUrl: string;
+}
+
+export const TOKEN_CHAIN_INFO: { [chainId: number]: { [tokenAddress: string]: ITokenChainInfo } } = {
+  [FIG_CHAIN_ID]: {
+    [USD_ADDRESS[FIG_CHAIN_ID].address]: { ...USD_ADDRESS[FIG_CHAIN_ID] },
+  },
+  [BSC_CHAIN_ID]: {
+    [USD_ADDRESS[BSC_CHAIN_ID].address]: { ...USD_ADDRESS[BSC_CHAIN_ID] },
+  },
+};
+
+export const TOKEN_CHAIN_CONTRACT: { [chainId: number]: { [tokenAddress: string]: { contract: Contract } } } = {
+  [FIG_CHAIN_ID]: {
+    [USD_ADDRESS[FIG_CHAIN_ID].address]: { contract: figBrigdeUsdContract },
+  },
+  [BSC_CHAIN_ID]: {
+    [USD_ADDRESS[BSC_CHAIN_ID].address]: { contract: bscBrigdeUsdContract },
+  },
+};

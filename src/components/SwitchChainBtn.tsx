@@ -1,8 +1,16 @@
+import { getChainIconInfo } from "@utils/index";
+import { useMemo } from "react";
+
 type Props = {
   handleOpenModal: any;
+  currentChainId: number;
 };
 
-export default function SwitchChainBtn({ handleOpenModal }: Props) {
+export default function SwitchChainBtn({ handleOpenModal, currentChainId }: Props) {
+  const chainIconinfo = useMemo(() => {
+    return getChainIconInfo(currentChainId);
+  }, [currentChainId]);
+
   return (
     <button
       onClick={() => handleOpenModal()}
@@ -58,9 +66,9 @@ export default function SwitchChainBtn({ handleOpenModal }: Props) {
           />
         </span>
         <img
-          alt="Polygon Mumbai"
-          srcSet="/static/img/logos/polygon-logo.svg 1x, /static/img/logos/polygon-logo.svg 2x"
-          src="/static/img/logos/polygon-logo.svg"
+          alt={chainIconinfo.name}
+          srcSet={`/static/img/logos/${chainIconinfo.iconPath} 1x, /static/img/logos/${chainIconinfo.iconPath} 2x`}
+          src={`/static/img/logos/${chainIconinfo.iconPath}`}
           decoding="async"
           data-nimg="intrinsic"
           style={{
@@ -80,7 +88,7 @@ export default function SwitchChainBtn({ handleOpenModal }: Props) {
           }}
         />
       </span>
-      Polygon Mumbai
+      {chainIconinfo.name}
       <svg
         width={24}
         height={24}

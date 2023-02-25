@@ -1,12 +1,83 @@
 import { Dialog } from "@mui/material";
+import { useEthers } from "@usedapp/core";
+import { CHAIN_ICON_INFO, IChainIconInfo } from "@utils/index";
+import { useMemo } from "react";
+import { notifyMessageError } from "../emiter/AppEmitter";
 
 type Props = {
   isOpen: boolean;
   onClose(): void;
+  currentChainId: number;
 };
 
+const classDiv = {
+  active:
+    "iekbcc0 ju367v7z ju367v68 ju367v6t ju367v7e ju367vo ju367v8i ju367v90 ju367v93 ju367vdl ju367vt ju367vv ju367ve0 ju367vec",
+  default:
+    "iekbcc0 ju367v7z ju367v68 ju367v6t ju367v7e ju367vo ju367v8i ju367v90 ju367vag ju367vfx _12cbo8i3 ju367v8g _12cbo8i6",
+};
+const ConnectActive = () => {
+  return (
+    <div className="iekbcc0 ju367v4 ju367va ju367vz ju367v41">
+      <div className="iekbcc0 ju367vec ju367v11 ju367v14 ju367v1a ju367v2o">Connected</div>
+      <div className="iekbcc0 ju367va3 ju367vdl ju367vs ju367vt ju367vv ju367v22 ju367v3h ju367v8n" />
+    </div>
+  );
+};
+const BtnNetworkItem = (props: { currentChainId: number; item: IChainIconInfo }) => {
+  const { currentChainId, item } = props;
+  const { switchNetwork } = useEthers();
+
+  const isActive = useMemo(() => item.chainId === currentChainId, [currentChainId, item.chainId]);
+  const doSwitchNetwork = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    switchNetwork(item.chainId)
+      .then()
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      .catch((e) => {
+        notifyMessageError(e.message);
+      });
+  };
+  return (
+    <button
+      className="iekbcc0 iekbcc9 ju367vo ju367va"
+      disabled={isActive}
+      type="button"
+      onClick={(e) => doSwitchNetwork(e)}
+    >
+      <div className={isActive ? classDiv.active : classDiv.default}>
+        <div className="iekbcc0 ju367v11 ju367v15 ju367v1c">
+          <div className="iekbcc0 ju367v4 ju367va ju367vz ju367v2k">
+            <div className="iekbcc0 ju367v4 ju367va ju367vz ju367v1i ju367v26">
+              <div className="iekbcc0 ju367v2f ju367v42">
+                <div
+                  className="iekbcc0 ju367vs ju367v26 ju367v61 ju367v8g ju367v8r"
+                  aria-label={item.name}
+                  style={{ background: "transparent" }}
+                >
+                  <div
+                    className="iekbcc0 ju367vh ju367v2f ju367v8e ju367v90"
+                    style={{
+                      transition: "opacity 0.15s linear 0s",
+                      userSelect: "none",
+                      backgroundImage: `url('/static/img/logos/${item.iconPath}')`,
+                      backgroundRepeat: "no-repeat",
+                      opacity: 1,
+                    }}
+                  />
+                </div>
+              </div>
+              <div>{item.name}</div>
+            </div>
+            {isActive && <ConnectActive />}
+          </div>
+        </div>
+      </div>
+    </button>
+  );
+};
 export default function SwitchChainModal(props: Props) {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, currentChainId } = props;
 
   return (
     <Dialog
@@ -50,97 +121,9 @@ export default function SwitchChainModal(props: Props) {
                     </button>
                   </div>
                   <div className="iekbcc0 ju367v7v ju367v64 ju367v6p ju367v7a ju367va ju367v10 ju367v1i">
-                    <button className="iekbcc0 iekbcc9 ju367vo ju367va" type="button">
-                      <div className="iekbcc0 ju367v7z ju367v68 ju367v6t ju367v7e ju367vo ju367v8i ju367v90 ju367vag ju367vfx _12cbo8i3 ju367v8g _12cbo8i6">
-                        <div className="iekbcc0 ju367v11 ju367v15 ju367v1c">
-                          <div className="iekbcc0 ju367v4 ju367va ju367vz ju367v2k">
-                            <div className="iekbcc0 ju367v4 ju367va ju367vz ju367v1i ju367v26">
-                              <div className="iekbcc0 ju367v2f ju367v42">
-                                <div
-                                  className="iekbcc0 ju367vs ju367v26 ju367v61 ju367v8g ju367v8r"
-                                  aria-label="Goerli"
-                                  style={{ background: "rgb(72, 76, 80)" }}
-                                >
-                                  <div
-                                    className="iekbcc0 ju367vh ju367v2f ju367v8e ju367v90"
-                                    style={{
-                                      transition: "opacity 0.15s linear 0s",
-                                      userSelect: "none",
-                                      backgroundImage: "url('/static/img/logos/ethereum-logo.svg')",
-                                      backgroundRepeat: "no-repeat",
-                                      opacity: 1,
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                              <div>Goerli</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </button>
-                    <button className="iekbcc0 iekbcc9 ju367vo ju367va" type="button">
-                      <div className="iekbcc0 ju367v7z ju367v68 ju367v6t ju367v7e ju367vo ju367v8i ju367v90 ju367vag ju367vfx _12cbo8i3 ju367v8g _12cbo8i6">
-                        <div className="iekbcc0 ju367v11 ju367v15 ju367v1c">
-                          <div className="iekbcc0 ju367v4 ju367va ju367vz ju367v2k">
-                            <div className="iekbcc0 ju367v4 ju367va ju367vz ju367v1i ju367v26">
-                              <div className="iekbcc0 ju367v2f ju367v42">
-                                <div
-                                  className="iekbcc0 ju367vs ju367v26 ju367v61 ju367v8g ju367v8r"
-                                  aria-label="BSC Testnet"
-                                  style={{ background: "transparent" }}
-                                >
-                                  <div
-                                    className="iekbcc0 ju367vh ju367v2f ju367v8e ju367v90"
-                                    style={{
-                                      transition: "opacity 0.15s linear 0s",
-                                      userSelect: "none",
-                                      backgroundImage: "url('/static/img/logos/bsc-logo.svg')",
-                                      backgroundRepeat: "no-repeat",
-                                      opacity: 1,
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                              <div>BSC Testnet</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </button>
-                    <button className="iekbcc0 iekbcc9 ju367vo ju367va" disabled type="button">
-                      <div className="iekbcc0 ju367v7z ju367v68 ju367v6t ju367v7e ju367vo ju367v8i ju367v90 ju367v93 ju367vdl ju367vt ju367vv ju367ve0 ju367vec">
-                        <div className="iekbcc0 ju367v11 ju367v15 ju367v1c">
-                          <div className="iekbcc0 ju367v4 ju367va ju367vz ju367v2k">
-                            <div className="iekbcc0 ju367v4 ju367va ju367vz ju367v1i ju367v26">
-                              <div className="iekbcc0 ju367v2f ju367v42">
-                                <div
-                                  className="iekbcc0 ju367vs ju367v26 ju367v61 ju367v8g ju367v8r"
-                                  aria-label="Polygon Mumbai"
-                                  style={{ background: "transparent" }}
-                                >
-                                  <div
-                                    className="iekbcc0 ju367vh ju367v2f ju367v8e ju367v90"
-                                    style={{
-                                      transition: "opacity 0.15s linear 0s",
-                                      userSelect: "none",
-                                      backgroundImage: "url('/static/img/logos/polygon-logo.svg')",
-                                      backgroundRepeat: "no-repeat",
-                                      opacity: 1,
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                              <div>Polygon Mumbai</div>
-                            </div>
-                            <div className="iekbcc0 ju367v4 ju367va ju367vz ju367v41">
-                              <div className="iekbcc0 ju367vec ju367v11 ju367v14 ju367v1a ju367v2o">Connected</div>
-                              <div className="iekbcc0 ju367va3 ju367vdl ju367vs ju367vt ju367vv ju367v22 ju367v3h ju367v8n" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </button>
+                    {Object.values(CHAIN_ICON_INFO).map((item) => (
+                      <BtnNetworkItem key={item.chainId} currentChainId={currentChainId} item={item} />
+                    ))}
                   </div>
                 </div>
               </div>

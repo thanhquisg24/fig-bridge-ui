@@ -7,7 +7,7 @@ type Props = {
 };
 
 export default function ConnectButton({ handleOpenModal }: Props) {
-  const { activateBrowserWallet, account } = useEthers();
+  const { activateBrowserWallet, account, chainId } = useEthers();
 
   function handleConnectWallet() {
     activateBrowserWallet();
@@ -15,7 +15,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
 
   return account ? (
     <>
-      <SwitchChainContainer />
+      {chainId && <SwitchChainContainer currentChainId={chainId} />}
       <button
         onClick={() => handleOpenModal()}
         className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiTypography-root MuiTypography-button e1hxx02w0 e1jvrmku0 css-ljhvh"

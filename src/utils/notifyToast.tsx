@@ -34,8 +34,6 @@ export const emitToastDefault = (message: string | JSX.Element): void => {
 
 export function notify({
   message,
-  description,
-  txid,
   type = "info",
 }: {
   message: string;
@@ -43,17 +41,6 @@ export function notify({
   txid?: string;
   type?: string;
 }): void {
-  if (txid) {
-    // eslint-disable-next-line no-param-reassign
-    description = (
-      <>
-        <br />
-        <a target="_blank" href={`https://solscan.io/tx/${txid}`} style={{ color: "#0000ff" }} rel="noreferrer">
-          View transaction {txid.slice(0, 8)}...{txid.slice(txid.length - 8)}
-        </a>
-      </>
-    );
-  }
   if (type === "success") {
     emitToastSuccess(message);
   } else if (type === "error") {
