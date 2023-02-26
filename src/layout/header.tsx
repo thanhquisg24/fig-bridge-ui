@@ -1,13 +1,10 @@
 import ConnectWalletContainer from "./ConnectWalletContainer";
-import { useEthers } from "@usedapp/core";
-import { useEffect } from "react";
 
 /* eslint-disable jsx-a11y/no-redundant-roles */
 export default function Header() {
-  const { account } = useEthers();
-  useEffect(() => {
-    console.log("🚀 ~ file: header.tsx:8 ~ Header ~ account:", account);
-  }, [account]);
+  // useEffect(() => {
+  //   console.log("🚀 ~ file: header.tsx:8 ~ Header ~ account:", account);
+  // }, [account]);
   return (
     <header
       className="MuiPaper-root MuiPaper-elevation MuiPaper-elevation4 MuiAppBar-root MuiAppBar-colorPrimary MuiAppBar-positionFixed bg-white dark:bg-grey-900 mui-fixed css-1exm00j"

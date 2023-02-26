@@ -626,4 +626,4 @@ export const bscTestNetBrigdeContractAbi = [
 ];
 
 export const figUsdContractAddress = "0x5e84E745478Afc73c888D1ab6e46C9274914Bbe0";
-export const bscUsdContractAddress = "0x231A080ae1A1c90208Af61b9E05bf57AB1cE343f";
+export const bscUsdContractAddress = "0x231a080ae1a1c90208af61b9e05bf57ab1ce343f";

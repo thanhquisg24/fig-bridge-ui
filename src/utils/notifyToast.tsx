@@ -11,9 +11,9 @@ export const emitToastError = (errMsg: string | JSX.Element): void => {
   });
 };
 export const emitToastSuccess = (sucMessage: string | JSX.Element): void => {
-  toast.success(sucMessage, {
+  toast.success(<span className="span-success">{sucMessage}</span>, {
     position: "top-right",
-    autoClose: 5000,
+    autoClose: 500000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,

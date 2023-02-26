@@ -4,6 +4,7 @@ import InputSelectDefault from "@components/InputSelectDefault";
 import InputSelectWithIcon from "@components/InputSelectWithIcon";
 import SwapModalWrapper from "@components/SwapModalWrapper";
 import { ChainIconItem } from "@components/chain-icon/chain-icon-modal";
+import { notifyMessageSuccess } from "@emiter/AppEmitter";
 import { formatEther } from "@ethersproject/units";
 import { useAppDispatch, useAppSelector } from "@hooks/useReduxToolKit";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -144,6 +145,7 @@ function SourceWalletbalance(props: {
   const { account } = useEthers();
   const tokenBalance = useTokenBalance(selectedToken.address, account, { chainId: selectedChainId });
   const filMaxToSource = () => {
+    // notifyMessageSuccess("0xabb94c5d57feb649d7815115c3b21d457261a165e4b815550c9e509b3624f150");
     dispatch(putSourceTokenSwapValueAction(formatEther(tokenBalance || 0) || ""));
   };
   return (

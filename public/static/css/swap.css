@@ -1812,3 +1812,13 @@
     padding-right: 1.25rem;
   }
 }
+
+.span-success {
+  word-wrap: break-word;
+  max-width: 500px;
+  display: block;
+}
+.Toastify__toast-container,
+.Toastify__toast-body {
+  max-width: 600px;
+}
