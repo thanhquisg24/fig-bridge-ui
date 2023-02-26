@@ -8,8 +8,8 @@ import {
 } from "./abi-contract";
 
 export const USD_ADDRESS: { [chainid: number]: { symbol: string; address: string; imgUrl: string } } = {
-  [FIG_CHAIN_ID]: { address: "0x6b175474e89094c44da98b954eedeac495271d0f", symbol: "FUSD", imgUrl: "usdt-logo.svg" },
-  [BSC_CHAIN_ID]: { address: "0x5C221E77624690fff6dd741493D735a17716c26B", symbol: "WFUSD", imgUrl: "usdt-logo.svg" },
+  [FIG_CHAIN_ID]: { address: "0x5e84e745478afc73c888d1ab6e46c9274914bbe0", symbol: "FUSD", imgUrl: "usdt-logo.svg" },
+  [BSC_CHAIN_ID]: { address: "0x231A080ae1A1c90208Af61b9E05bf57AB1cE343f", symbol: "WFUSD", imgUrl: "usdt-logo.svg" },
 };
 
 export const ETHER_TOKEN_SYMBOL: { [chainid: number]: { symbol: string } } = {

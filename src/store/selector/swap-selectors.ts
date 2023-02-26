@@ -1,6 +1,7 @@
-import { ISelectedToken, ISwapSelectedValue } from "@store/models/swap-model";
+import { ISelectedToken, ISwapModel, ISwapSelectedValue } from "@store/models/swap-model";
 import { RootStateType } from "../types";
 
+export const getSwapSelector = (state: RootStateType): ISwapModel => state.swap;
 export const getSourceSelector = (state: RootStateType): ISwapSelectedValue => state.swap.source;
 export const getSourceChainSelector = (state: RootStateType): number => state.swap.source.selectedChainId;
 export const getSourceTokenSelector = (state: RootStateType): ISelectedToken | null => state.swap.source.selectedToken;

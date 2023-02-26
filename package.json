@@ -5,10 +5,11 @@
   "dependencies": {
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
-    "@mui/material": "latest",
     "@ethersproject/units": "^5.7.0",
     "@metamask/detect-provider": "^2.0.0",
     "@metamask/jazzicon": "^2.0.0",
+    "@mui/lab": "^5.0.0-alpha.120",
+    "@mui/material": "latest",
     "@reduxjs/toolkit": "^1.9.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

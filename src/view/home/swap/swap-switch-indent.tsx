@@ -1,7 +1,21 @@
+import { useAppDispatch, useAppSelector } from "@hooks/useReduxToolKit";
+import { getSwapSelector } from "@store/selector/swap-selectors";
+import { switchSourceDes } from "@store/actions/swap-action";
+
 export default function SwapSwitchIndent() {
+  const swapData = useAppSelector(getSwapSelector);
+  const dispatch = useAppDispatch();
+
+  const onSwapSwitch = () => {
+    if (swapData.source.selectedChainId > 0 && swapData.source.selectedToken) {
+      if (swapData.destination.selectedChainId > 0 && swapData.destination.selectedToken) {
+        dispatch(switchSourceDes());
+      }
+    }
+  };
   return (
     <div className="flex justify-center items-center h-[1px]">
-      <button type="button" className="css-1w6n47d e14mugzc0">
+      <button type="button" className="css-1w6n47d e14mugzc0" onClick={() => onSwapSwitch()}>
         <div className="invert-img relative w-3.5 h-3.5">
           <span
             style={{

@@ -1,11 +1,21 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { ITokenChainInfo } from "@abi/tokenAddress";
 import InputSelectDefault from "@components/InputSelectDefault";
 import InputSelectWithIcon from "@components/InputSelectWithIcon";
 import SwapModalWrapper from "@components/SwapModalWrapper";
 import { ChainIconItem } from "@components/chain-icon/chain-icon-modal";
-import { useAppSelector, useAppDispatch } from "@hooks/useReduxToolKit";
-import { selectSourceChainIdAction, selectSourceTokenAction } from "@store/actions";
-import { getSourceSelector, getSourceTokenSelector } from "@store/selector/swap-selectors";
+import { formatEther } from "@ethersproject/units";
+import { useAppDispatch, useAppSelector } from "@hooks/useReduxToolKit";
+import { Dispatch } from "@reduxjs/toolkit";
+import {
+  CombineActionTypes,
+  putSourceTokenSwapValueAction,
+  selectSourceChainIdAction,
+  selectSourceTokenAction,
+} from "@store/actions";
+import { ISelectedToken } from "@store/models/swap-model";
+import { getSourceSelector, getSourceTokenSelector, getSourceTokenValueSelector } from "@store/selector/swap-selectors";
+import { useEthers, useTokenBalance } from "@usedapp/core";
 import { CHAIN_ICON_INFO, getChainIconInfo, getTokenListByChain } from "@utils/index";
 import { useMemo, useState } from "react";
 
@@ -125,26 +135,60 @@ function SwapSourceTokenBtn(props: { selectedChainId: number }) {
   );
 }
 
+function SourceWalletbalance(props: {
+  selectedChainId: number;
+  selectedToken: ISelectedToken;
+  dispatch: Dispatch<CombineActionTypes>;
+}) {
+  const { selectedChainId, selectedToken, dispatch } = props;
+  const { account } = useEthers();
+  const tokenBalance = useTokenBalance(selectedToken.address, account, { chainId: selectedChainId });
+  const filMaxToSource = () => {
+    dispatch(putSourceTokenSwapValueAction(formatEther(tokenBalance || 0) || ""));
+  };
+  return (
+    <div className="flex items-center">
+      <p className="MuiTypography-root MuiTypography-caption text-grey-300 dark:text-grey-400 flex items-center tracking-[-0.03em] css-m1yo1i">
+        Balance: {formatEther(tokenBalance || 0)} {selectedToken.symbol}
+        <span className="ml-1 mr-1">|</span>
+      </p>
+      <p
+        onClick={() => filMaxToSource()}
+        className="MuiTypography-root MuiTypography-caption font-semibold text-grey-300 dark:text-grey-400 hover:text-grey-400 hover:dark:text-grey-500 transition-all cursor-pointer tracking-[-0.03em] css-m1yo1i"
+      >
+        Max
+      </p>
+    </div>
+  );
+}
+
 export default function SwapSource() {
   const sourceSwapinfo = useAppSelector(getSourceSelector);
+  const sourceSwapValue = useAppSelector(getSourceTokenValueSelector);
+  const dispatch = useAppDispatch();
+  const onInputSourceVal = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    dispatch(putSourceTokenSwapValueAction(e.target.value));
+  };
   return (
     <div className="rounded-t css-1nestwu ec4inb73">
       <div className="flex items-center justify-between">
         <p className="MuiTypography-root MuiTypography-body1 css-i3l18a">Swap from:</p>
-        <div className="flex items-center">
-          <p className="MuiTypography-root MuiTypography-caption text-grey-300 dark:text-grey-400 flex items-center tracking-[-0.03em] css-m1yo1i">
-            Balance: 0 tMATIC<span className="ml-1 mr-1">|</span>
-          </p>
-          <p className="MuiTypography-root MuiTypography-caption font-semibold text-grey-300 dark:text-grey-400 hover:text-grey-400 hover:dark:text-grey-500 transition-all cursor-pointer tracking-[-0.03em] css-m1yo1i">
-            Max
-          </p>
-        </div>
+        {sourceSwapinfo.selectedChainId > 0 && sourceSwapinfo.selectedToken && (
+          <SourceWalletbalance
+            selectedChainId={sourceSwapinfo.selectedChainId}
+            selectedToken={sourceSwapinfo.selectedToken}
+            dispatch={dispatch}
+          />
+        )}
       </div>
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-2">
         <input
           type="number"
           className="sm:text-left text-right ec4inb72 css-1aao2o7 e15splxn0"
           placeholder="Enter an amount"
+          onChange={(e) => onInputSourceVal(e)}
+          value={sourceSwapValue}
         />
         <div className="css-4plb0w ec4inb71">
           <SwapSourceChainBtn selectedChainId={sourceSwapinfo.selectedChainId} />

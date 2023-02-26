@@ -1,209 +1,164 @@
-export default function SwapDes() {
+import { ITokenChainInfo } from "@abi/tokenAddress";
+import InputSelectDefault from "@components/InputSelectDefault";
+import InputSelectWithIcon from "@components/InputSelectWithIcon";
+import SwapModalWrapper from "@components/SwapModalWrapper";
+import { ChainIconItem } from "@components/chain-icon/chain-icon-modal";
+import { useAppDispatch, useAppSelector } from "@hooks/useReduxToolKit";
+import { selectDesChainIdAction, selectDesTokenAction } from "@store/actions";
+import { getDesSelector, getDesTokenSelector, getSwapSelector } from "@store/selector/swap-selectors";
+import { CHAIN_ICON_INFO, getChainIconInfo, getTokenListByChain } from "@utils/index";
+import { useMemo, useState } from "react";
+
+function SwapDesChainBtn(props: { selectedChainId: number }) {
+  const { selectedChainId } = props;
+  const dispatch = useAppDispatch();
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+
+  const onHandleOpen = () => {
+    setShow(true);
+  };
+  const onSelectChainId = (chainId: number) => {
+    dispatch(selectDesChainIdAction(chainId));
+    handleClose();
+  };
+  const chainIconinfo = useMemo(() => {
+    if (selectedChainId > 0) {
+      return {
+        chain: getChainIconInfo(selectedChainId),
+        // chainTokenList: getTokenListByChain(selectedChainId),
+      };
+    }
+    return null;
+  }, [selectedChainId]);
+
   return (
-    <div className="rounded-b css-1nestwu ec4inb73">
+    <>
+      {chainIconinfo ? (
+        <InputSelectWithIcon
+          title={chainIconinfo.chain.name}
+          imgUrl={chainIconinfo.chain.iconPath}
+          onClickHanlder={onHandleOpen}
+        />
+      ) : (
+        <InputSelectDefault title="Select Network" onClickHanlder={onHandleOpen} />
+      )}
+      <SwapModalWrapper
+        title="Select Network"
+        description="What network do you want to send assets from?"
+        isOpen={show}
+        onClose={handleClose}
+      >
+        <div className="css-gj7b5f eu2qphv1">
+          {Object.values(CHAIN_ICON_INFO).map((item) => (
+            <ChainIconItem
+              key={item.chainId}
+              title={item.name}
+              onHandleClick={() => onSelectChainId(item.chainId)}
+              iconUrl={item.iconPath}
+            />
+          ))}
+        </div>
+      </SwapModalWrapper>
+    </>
+  );
+}
+
+function SwapSourceTokenBtn(props: { selectedChainId: number }) {
+  const { selectedChainId } = props;
+  const currentTokeninfo = useAppSelector(getDesTokenSelector);
+  const dispatch = useAppDispatch();
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+
+  const onHandleOpen = () => {
+    setShow(true);
+  };
+  const onSelectToken = (item: ITokenChainInfo) => {
+    dispatch(selectDesTokenAction(item));
+    handleClose();
+  };
+  const chainIconinfo = useMemo(() => {
+    if (selectedChainId > 0) {
+      return getTokenListByChain(selectedChainId);
+    }
+    return null;
+  }, [selectedChainId]);
+
+  return (
+    <>
+      {currentTokeninfo ? (
+        <InputSelectWithIcon
+          title={currentTokeninfo.symbol}
+          imgUrl={currentTokeninfo.imgUrl}
+          onClickHanlder={onHandleOpen}
+        />
+      ) : (
+        <InputSelectDefault
+          title="Select Token"
+          onClickHanlder={onHandleOpen}
+          disabled={chainIconinfo === null || chainIconinfo.length === 0}
+        />
+      )}
+      <SwapModalWrapper
+        title="Select Token"
+        description="What asset do you want to send?"
+        isOpen={show}
+        onClose={handleClose}
+      >
+        {chainIconinfo && (
+          <div className="css-gj7b5f eu2qphv1">
+            {chainIconinfo.map((item) => (
+              <ChainIconItem
+                key={item.address}
+                title={item.symbol}
+                onHandleClick={() => onSelectToken(item)}
+                iconUrl={item.imgUrl}
+              />
+            ))}
+          </div>
+        )}
+      </SwapModalWrapper>
+    </>
+  );
+}
+
+export default function SwapDes() {
+  const desSwapinfo = useAppSelector(getDesSelector);
+  const swapData = useAppSelector(getSwapSelector);
+
+  const estimateDesData = useMemo(() => {
+    if (swapData.source.selectedChainId > 0 && swapData.source.selectedToken) {
+      if (swapData.destination.selectedChainId > 0 && swapData.destination.selectedToken) {
+        return swapData.source.tokenSwapValue;
+      }
+    }
+    return "";
+  }, [
+    swapData.destination.selectedChainId,
+    swapData.destination.selectedToken,
+    swapData.source.selectedChainId,
+    swapData.source.selectedToken,
+    swapData.source.tokenSwapValue,
+  ]);
+  return (
+    <div className="rounded-t css-1nestwu ec4inb73">
       <div className="flex items-center justify-between">
         <p className="MuiTypography-root MuiTypography-body1 css-i3l18a">Receive:</p>
       </div>
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-2">
         <input
-          type="text"
+          type="number"
           className="sm:text-left text-right ec4inb72 css-1aao2o7 e15splxn0"
-          placeholder="0.0"
+          placeholder="0.00"
           disabled
+          value={estimateDesData}
         />
         <div className="css-4plb0w ec4inb71">
-          <button type="button" className="css-kjyh70 ecs3q253">
-            <div className="css-8krjsn ecs3q252">
-              <div className="css-15753k5 ecs3q251">
-                <span
-                  style={{
-                    boxSizing: "border-box",
-                    display: "inline-block",
-                    overflow: "hidden",
-                    width: "initial",
-                    height: "initial",
-                    background: "none",
-                    opacity: 1,
-                    border: "0px",
-                    margin: "0px",
-                    padding: "0px",
-                    position: "relative",
-                    maxWidth: "100%",
-                  }}
-                >
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "block",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: "0px",
-                      margin: "0px",
-                      padding: "0px",
-                      maxWidth: "100%",
-                    }}
-                  >
-                    <img
-                      alt=""
-                      aria-hidden="true"
-                      src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2720%27%20height=%2720%27/%3e"
-                      style={{
-                        display: "block",
-                        maxWidth: "100%",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: "0px",
-                        margin: "0px",
-                        padding: "0px",
-                      }}
-                    />
-                  </span>
-                  <img
-                    alt="asset"
-                    srcSet="/static/img/logos/bsc-logo.svg 1x, /static/img/logos/bsc-logo.svg 2x"
-                    src="/static/img/logos/bsc-logo.svg"
-                    decoding="async"
-                    data-nimg="intrinsic"
-                    style={{
-                      position: "absolute",
-                      inset: "0px",
-                      boxSizing: "border-box",
-                      padding: "0px",
-                      border: "none",
-                      margin: "auto",
-                      display: "block",
-                      width: "0px",
-                      height: "0px",
-                      minWidth: "100%",
-                      maxWidth: "100%",
-                      minHeight: "100%",
-                      maxHeight: "100%",
-                    }}
-                  />
-                </span>
-              </div>
-              <p className="MuiTypography-root MuiTypography-caption font-semibold text-left leading-3 css-m1yo1i">
-                BSC Testnet
-              </p>
-            </div>
-            <div className="css-12bfvy2 ecs3q250">
-              <svg
-                width={24}
-                height={24}
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-current w-4 h-4"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M5 7.93934L12 14.9393L19 7.93934L20.0607 9L12.5303 16.5303C12.2374 16.8232 11.7626 16.8232 11.4697 16.5303L3.93934 9L5 7.93934Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-          </button>
-          <button type="button" className="css-kjyh70 ecs3q253">
-            <div className="css-8krjsn ecs3q252">
-              <div className="css-15753k5 ecs3q251">
-                <span
-                  style={{
-                    boxSizing: "border-box",
-                    display: "inline-block",
-                    overflow: "hidden",
-                    width: "initial",
-                    height: "initial",
-                    background: "none",
-                    opacity: 1,
-                    border: "0px",
-                    margin: "0px",
-                    padding: "0px",
-                    position: "relative",
-                    maxWidth: "100%",
-                  }}
-                >
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "block",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: "0px",
-                      margin: "0px",
-                      padding: "0px",
-                      maxWidth: "100%",
-                    }}
-                  >
-                    <img
-                      alt=""
-                      aria-hidden="true"
-                      src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2720%27%20height=%2720%27/%3e"
-                      style={{
-                        display: "block",
-                        maxWidth: "100%",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: "0px",
-                        margin: "0px",
-                        padding: "0px",
-                      }}
-                    />
-                  </span>
-                  <img
-                    alt="asset"
-                    srcSet="/static/img/logos/bnb-logo.svg 1x, /static/img/logos/bnb-logo.svg 2x"
-                    src="/static/img/logos/bnb-logo.svg"
-                    decoding="async"
-                    data-nimg="intrinsic"
-                    style={{
-                      position: "absolute",
-                      inset: "0px",
-                      boxSizing: "border-box",
-                      padding: "0px",
-                      border: "none",
-                      margin: "auto",
-                      display: "block",
-                      width: "0px",
-                      height: "0px",
-                      minWidth: "100%",
-                      maxWidth: "100%",
-                      minHeight: "100%",
-                      maxHeight: "100%",
-                    }}
-                  />
-                </span>
-              </div>
-              <p className="MuiTypography-root MuiTypography-caption font-semibold text-left leading-3 css-m1yo1i">
-                tBNB
-              </p>
-            </div>
-            <div className="css-12bfvy2 ecs3q250">
-              <svg
-                width={24}
-                height={24}
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-current w-4 h-4"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M5 7.93934L12 14.9393L19 7.93934L20.0607 9L12.5303 16.5303C12.2374 16.8232 11.7626 16.8232 11.4697 16.5303L3.93934 9L5 7.93934Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-          </button>
+          <SwapDesChainBtn selectedChainId={desSwapinfo.selectedChainId} />
+          <SwapSourceTokenBtn selectedChainId={desSwapinfo.selectedChainId} />
         </div>
       </div>
     </div>
