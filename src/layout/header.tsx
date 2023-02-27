@@ -13,11 +13,12 @@ export default function Header() {
       <div className="MuiContainer-root MuiContainer-maxWidthXl css-1ekb41w">
         <div className="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-8g4gfm">
           <div className="flex gap-6 items-center grow">
-            <h1>
-              <a role="link" tabIndex={0} href="/">
-                <h1 style={{ color: "black", fontWeight: "bold" }}>FIG Bridge</h1>
-              </a>
-            </h1>
+            <a role="link" tabIndex={0} href="/" className="flex gap-6 items-center grow">
+              <img width="116" height="25" src="/static/img/logos/icon-figchain.png" alt="Fig" />
+              <h1 className="text-2xl" style={{ color: "#29abe2", fontWeight: "bold" }}>
+                FIG Bridge
+              </h1>
+            </a>
             <div className="hidden lg:flex gap-1"></div>
           </div>
           <div className="css-muaxpu eqz6u831">

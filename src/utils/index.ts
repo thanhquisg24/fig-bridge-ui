@@ -35,7 +35,7 @@ export interface IChainIconInfo {
   chainId: number;
 }
 export const CHAIN_ICON_INFO: { [chainid: number]: IChainIconInfo } = {
-  [FIG_CHAIN_ID]: { iconPath: "ethereum-logo.svg", name: FIG_CHAIN_COST.chainName, chainId: FIG_CHAIN_ID },
+  [FIG_CHAIN_ID]: { iconPath: "image2vector.svg", name: FIG_CHAIN_COST.chainName, chainId: FIG_CHAIN_ID },
   [BSC_CHAIN_ID]: { iconPath: "bsc-logo.svg", name: BSC_TEST_NET.chainName, chainId: BSC_CHAIN_ID },
 };
 

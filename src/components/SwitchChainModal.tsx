@@ -55,7 +55,29 @@ const BtnNetworkItem = (props: { currentChainId: number; item: IChainIconInfo })
                   aria-label={item.name}
                   style={{ background: "transparent" }}
                 >
-                  <div
+                  <img
+                    alt={item.name}
+                    srcSet={`/static/img/logos/${item.iconPath} 1x, /static/img/logos/${item.iconPath} 2x`}
+                    src={`/static/img/logos/${item.iconPath}`}
+                    decoding="async"
+                    data-nimg="intrinsic"
+                    style={{
+                      position: "absolute",
+                      inset: "0px",
+                      boxSizing: "border-box",
+                      padding: "0px",
+                      border: "none",
+                      margin: "auto",
+                      display: "block",
+                      width: "0px",
+                      height: "0px",
+                      minWidth: "100%",
+                      maxWidth: "100%",
+                      minHeight: "100%",
+                      maxHeight: "100%",
+                    }}
+                  />
+                  {/* <div
                     className="iekbcc0 ju367vh ju367v2f ju367v8e ju367v90"
                     style={{
                       transition: "opacity 0.15s linear 0s",
@@ -64,7 +86,7 @@ const BtnNetworkItem = (props: { currentChainId: number; item: IChainIconInfo })
                       backgroundRepeat: "no-repeat",
                       opacity: 1,
                     }}
-                  />
+                  /> */}
                 </div>
               </div>
               <div>{item.name}</div>
