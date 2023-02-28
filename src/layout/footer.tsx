@@ -11,16 +11,6 @@ export default function Footer() {
             </a>
             <div>
               <div className="eap777i0 css-1spwsbf e1sjvzpi0">
-                <select value="en" onChange={() => {}}>
-                  <option value="en">English</option>
-                  <option value="es-MX">Español</option>
-                  <option value="hi-IN">हिंदी</option>
-                  <option value="ja-JP">日本語</option>
-                  <option value="ko-KR">한국</option>
-                  <option value="ru-RU">русский</option>
-                  <option value="zh-CN">简体中文</option>
-                  <option value="zh-TW">繁體中文</option>
-                </select>
                 <svg
                   width={15}
                   height={24}
